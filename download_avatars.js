@@ -1,8 +1,13 @@
 var request = require('request');
-var userToken = "00836d766c9649831a6eb932ddd083086a521e1d"
+
+//fill in your access token here instead of process.argv[2];
+
+var accessToken = process.argv[2];
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
+
+// Forms the URL and header to request API data
 
 function getRequestOptions(repoOwner, repoName) {
   return {
@@ -11,10 +16,12 @@ function getRequestOptions(repoOwner, repoName) {
       'User-Agent': 'kittenfingers'
     },
     qs: {
-      access_token: userToken
+      access_token: accessToken
     }
   };
 }
+
+// Gets the API data
 
 function getRepoContributors(repoOwner, repoName, callback) {
   request(getRequestOptions(repoOwner, repoName), function (error, response, body) {
@@ -27,10 +34,8 @@ function getRepoContributors(repoOwner, repoName, callback) {
   });
 }
 
-function filterContributors () {
 
-}
-
+// Calls the function with the inputs of the username, repo, and callback function that filters out only avatar URLs
 
 getRepoContributors("jquery", "jquery", function (data) {
   data.forEach(function(data) {
