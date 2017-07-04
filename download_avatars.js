@@ -1,12 +1,21 @@
+//For a user to initialize, please download your own access token below and use first two command line arguments
+//to specify the owner and repository you wish to download from.
+//command line eg. node download_avatar.js <repoOwner> <repoName>
+
+//These are required variables and the process.argv that will be the input for the user to download the repository photos
+
 var request = require('request');
 var fs = require('fs');
+var repoOwner = process.argv[2];
+var repoName = process.argv[3];
 
 //fill in your github personal access token here instead of process.argv[2];, create one here: https://github.com/settings/tokens
+//alternatively, keep process.argv[4] and pass your token as an additional arugment on the command line.
+//eg. node download_avatar.js <repoOwner> <repoName> <token>
 
-var accessToken = process.argv[2];
+var accessToken = process.argv[4];
 
 console.log('Welcome to the GitHub Avatar Downloader!');
-
 
 // Forms the URL and header to request API data
 
@@ -22,7 +31,7 @@ function getRequestOptions(repoOwner, repoName) {
   };
 }
 
-// Gets the API data
+// Gets the API data and parses it
 
 function getRepoContributors(repoOwner, repoName, callback) {
   console.log("Looking for and downloading images from " + repoName + " to /avatar... Please wait.");
@@ -36,7 +45,7 @@ function getRepoContributors(repoOwner, repoName, callback) {
   });
 }
 
-// downloads all of the image URLs after they have been fetched to specified filepath.
+// downloads all of the image URLs after they have been fetched and copies them to the specified filepath.
 
 function downloadImageByURL(url, filePath) {
   request.get(url)
@@ -52,9 +61,9 @@ function downloadImageByURL(url, filePath) {
   }
 
 
-// Calls the function with the inputs of the username, repo, and callback function that filters out only avatar URLs
+// Calls the function with the inputs of the repo owner, repo, and callback function that brings in parsed URL data to fetch.
 
-getRepoContributors("jquery", "jquery", function (data) {
+getRepoContributors(repoOwner, repoName, function (data) {
   data.forEach(function(data) {
     downloadImageByURL(data.avatar_url, "avatars/" + data.login + ".jpg");
   });
