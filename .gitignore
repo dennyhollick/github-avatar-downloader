@@ -61,4 +61,4 @@ typings/
 access-token.txt
 
 #Photos
-.jpg
+*.jpg
