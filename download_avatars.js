@@ -9,6 +9,8 @@ var fs = require('fs');
 var repoOwner = process.argv[2];
 var repoName = process.argv[3];
 
+
+
 //fill in your github personal access token here instead of process.argv[2];, create one here: https://github.com/settings/tokens
 //alternatively, keep process.argv[4] and pass your token as an additional arugment on the command line.
 //eg. node download_avatar.js <repoOwner> <repoName> <token>
@@ -61,7 +63,19 @@ function downloadImageByURL(url, filePath) {
   }
 
 
+//does a check to make sure the command line arguments are valid for a lookup.
+
+if (repoOwner === undefined || repoName === undefined) {
+  console.log("Command line arguments are incorrect. Submit in the format: $node download_avatar.js <repoOwner> <repoName> \n eg. $node download_avatar.js jquery jquery");
+}
+
+else if (accessToken === undefined) {
+  console.log("You are missing a personal access token. Either add it to download_avatars.js, or add it as the third command line argument. \n eg. $node download_avatar.js <repoOwner> <repoName> <token>");
+}
+
 // Calls the function with the inputs of the repo owner, repo, and callback function that brings in parsed URL data to fetch.
+
+else {
 
 getRepoContributors(repoOwner, repoName, function (data) {
   data.forEach(function(data) {
@@ -69,3 +83,4 @@ getRepoContributors(repoOwner, repoName, function (data) {
   });
 });
 
+}
