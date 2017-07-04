@@ -20,11 +20,21 @@ function getRepoContributors(repoOwner, repoName, callback) {
   request(getRequestOptions(repoOwner, repoName), function (error, response, body) {
     try {
       const data = JSON.parse(body);
-      console.log(data);
+      callback(data);
     } catch (err) {
       console.log('Failed to parse content body');
     }
   });
 }
 
-getRepoContributors("jquery", "jquery");
+function filterContributors () {
+
+}
+
+
+getRepoContributors("jquery", "jquery", function (data) {
+  data.forEach(function(data) {
+    console.log(data.avatar_url);
+  });
+});
+
